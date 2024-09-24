@@ -1,98 +1,150 @@
-import FieldInput from '../../../../components/form-controller/FieldInput';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup"
-import { Avatar, Button, createTheme, FormLabel, Typography } from '@mui/material';
-import { makeStyles, ThemeProvider } from '@mui/styles';
+import { yupResolver } from "@hookform/resolvers/yup"
+import { LockOutlined } from "@mui/icons-material"
+import CancelRoundedIcon from "@mui/icons-material/CancelRounded"
+import { Avatar, Button, createTheme, FormLabel, Typography } from "@mui/material"
+import { makeStyles, ThemeProvider } from "@mui/styles"
 import PropTypes from "prop-types"
-import { LockOutlined } from '@mui/icons-material';
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-import FieldPassword from '../../../../components/form-controller/FieldPassword';
+import { useForm } from "react-hook-form"
+import * as yup from "yup"
+import FieldInput from "../../../../components/form-controller/FieldInput"
+import FieldPassword from "../../../../components/form-controller/FieldPassword"
 
 RegisterForm.propTypes = {
-    handleClose: PropTypes.func,
+  handleClose: PropTypes.func,
 }
 AppContent.propTypes = {
-    submitForm: PropTypes.func,
-    handleClose: PropTypes.func,
-    form: PropTypes.object
+  submitForm: PropTypes.func,
+  handleClose: PropTypes.func,
+  form: PropTypes.object,
 }
-const useStyle = makeStyles(theme => ({
-    root: {
-        paddingTop: theme.spacing(3),
-        paddingBottom: theme.spacing(3),
+const useStyle = makeStyles((theme) => ({
+  root: {
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+  },
+  icon: {
+    margin: "0 auto",
+  },
+  title: {
+    textAlign: "center",
+  },
+  buttonSubmit: {
+    "&#button-submit": {
+      marginTop: "15px",
     },
-    icon: {
-        margin: "0 auto"
+  },
+  buttonCancel: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    cursor: "pointer",
+    "&:hover": {
+      color: "#ff2000",
     },
-    title: {
-        textAlign: "center"
-    },
-    buttonSubmit: {
-        "&#button-submit": {
-            marginTop: "15px",
-        },
-    },
-    buttonCancel: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        cursor: 'pointer',
-        '&:hover': {
-            color: "#ff2000"
-        }
-    }
+  },
 }))
 function AppContent(props) {
-    const { form, submitForm, handleClose } = props
-    const classes = useStyle()
-    return (
-        <div className={classes.root}>
-            <Avatar className={classes.icon}>
-                <LockOutlined></LockOutlined>
-            </Avatar>
-            <Typography variant='h4' className={classes.title}>Create an account</Typography>
-            <form onSubmit={form.handleSubmit(submitForm)}>
-                <FormLabel htmlFor="username">Username</FormLabel>
-                <FieldInput id="username" placeholder="john name" name="user" type="text" form={form}></FieldInput>
-                <FormLabel htmlFor="email">Email</FormLabel>
-                <FieldInput id="email" placeholder="youremail@gmail.com" name="email" type="email" form={form}></FieldInput>
-                <FormLabel htmlFor="username">Password</FormLabel>
-                <FieldPassword placeholder="●●●●" name="password" type="password" form={form} />
-                <FormLabel htmlFor="username">Retype password</FormLabel>
-                <FieldInput placeholder="retype password" name="retypepassword" type="password" form={form}></FieldInput>
-                <span className={classes.buttonCancel} onClick={handleClose}><CancelRoundedIcon /></span>
-                <Button id="button-submit" className={classes.buttonSubmit} fullWidth type="submit" variant='contained'>Submit</Button>
-            </form>
-        </div>
-    )
+  const {form, submitForm, handleClose} = props
+  const classes = useStyle()
+  return (
+    <div className={classes.root}>
+      <Avatar className={classes.icon}>
+        <LockOutlined></LockOutlined>
+      </Avatar>
+      <Typography variant='h4' className={classes.title}>
+        Create an account
+      </Typography>
+      <form onSubmit={form.handleSubmit(submitForm)}>
+        <FormLabel htmlFor='username'>Username</FormLabel>
+        <FieldInput
+          id='username'
+          placeholder='john name'
+          name='user'
+          type='text'
+          form={form}></FieldInput>
+        <FormLabel htmlFor='email'>Email</FormLabel>
+        <FieldInput
+          id='email'
+          placeholder='youremail@gmail.com'
+          name='email'
+          type='email'
+          form={form}></FieldInput>
+        <FormLabel htmlFor='username'>Password</FormLabel>
+        <FieldPassword
+          placeholder='●●●●'
+          name='password'
+          type='password'
+          form={form}
+        />
+        <FormLabel htmlFor='username'>Retype password</FormLabel>
+        <FieldPassword
+          type='password'
+          placeholder='retype password'
+          name='retypepassword'
+          form={form}
+        />
+        <span className={classes.buttonCancel} onClick={handleClose}>
+          <CancelRoundedIcon />
+        </span>
+        <Button
+          id='button-submit'
+          className={classes.buttonSubmit}
+          fullWidth
+          type='submit'
+          variant='contained'>
+          Submit
+        </Button>
+      </form>
+    </div>
+  )
 }
 const theme = createTheme()
 function RegisterForm(props) {
-    const { handleClose } = props
-    const schema = yup.object({
-        user: yup.string().required("không được để trống"),
-        password: yup.string().required("không được đề trống"),
-        email: yup.string().required("không được để trống"),
-        retypepassword: yup.string().required("không được đề trống")
-    }).required()
-    const form = useForm({
-        defaultValues: {
-            user: "",
-            email: "",
-            password: "",
-            retypepassword: "",
-        },
-        resolver: yupResolver(schema)
+  const {handleClose} = props
+  const schema = yup
+    .object({
+      user: yup
+        .string()
+        .required("không được để trống")
+        .test("validateUser", "Nhập ít nhất 2 chữ", (value) => {
+          return value.split(" ").length >= 2
+        }),
+      password: yup
+        .string()
+        .required("không được đề trống")
+        .min(6, "Nhập hơn 6 ký tự"),
+      email: yup
+        .string()
+        .required("không được để trống")
+        .email("nhập đúng email"),
+      retypepassword: yup
+        .string()
+        .required("không được đề trống")
+        .oneOf([yup.ref("password")], "password không khớp"),
     })
-    const submitForm = (user, password) => {
-        console.log(user, password)
-    }
-    return (
-        <ThemeProvider theme={theme}>
-            <AppContent handleClose={handleClose} {...props} form={form} submitForm={submitForm} />
-        </ThemeProvider>
-    )
+    .required()
+  const form = useForm({
+    defaultValues: {
+      user: "",
+      email: "",
+      password: "",
+      retypepassword: "",
+    },
+    resolver: yupResolver(schema),
+  })
+  const submitForm = (user, password) => {
+    console.log(user, password)
+  }
+  return (
+    <ThemeProvider theme={theme}>
+      <AppContent
+        handleClose={handleClose}
+        {...props}
+        form={form}
+        submitForm={submitForm}
+      />
+    </ThemeProvider>
+  )
 }
 
-export default RegisterForm;
+export default RegisterForm

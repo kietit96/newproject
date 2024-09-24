@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import RegisterForm from '../RegisterForm';
 
 Register.propTypes = {
@@ -9,6 +9,7 @@ Register.propTypes = {
 function Register({ handleClose }) {
     const handleSubmit = (values) => {
         console.log(values)
+   
     }
     return (
         <div>
