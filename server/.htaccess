@@ -1,0 +1,99 @@
+IndexIgnore .htaccess */.??* *~ *# */HEADER* */README* */_vti*
+
+Header unset ETag
+FileETag None
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript application/json
+</IfModule>
+
+<ifmodule mod_expires.c>
+	<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf|txt|html|x-html|php|css|xml|js|woff|ttf|svg|eot)(\.gz)?$">
+		SetOutputFilter DEFLATE
+		ExpiresActive On
+		ExpiresDefault "access plus 10 years"
+		ExpiresByType text/html "access plus 1 day"
+	</FilesMatch>
+</ifmodule>
+
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	Options +FollowSymlinks
+	
+	RewriteCond %{HTTPS} !=on [NC]
+	RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+	ErrorDocument 404 /newproject/server/404.html
+
+	RewriteBase /newproject/server/
+
+	#IF FILES NOT EXISTS, CONTINUE
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^$  index.php
+	
+	# Block MySQL injections, RFI, base64, etc.
+	RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [OR]
+    RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http%3A%2F%2F [OR]
+    RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.//?)+ [OR]
+    RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [NC,OR]
+    RewriteCond %{QUERY_STRING} \=PHP[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12} [NC,OR]
+    RewriteCond %{QUERY_STRING} (\.\./|\.\.) [OR]
+    RewriteCond %{QUERY_STRING} ftp\: [NC,OR]
+    RewriteCond %{QUERY_STRING} http\: [NC,OR]
+    RewriteCond %{QUERY_STRING} https\: [NC,OR]
+    RewriteCond %{QUERY_STRING} \=\|w\| [NC,OR]
+    RewriteCond %{QUERY_STRING} ^(.*)/self/(.*)$ [NC,OR]
+    RewriteCond %{QUERY_STRING} ^(.*)cPath=http://(.*)$ [NC,OR]
+    RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [NC,OR]
+    RewriteCond %{QUERY_STRING} base64_(en|de)code[^(]*\([^)]*\) [NC,OR]
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} ^.*(\[|\]|\(|\)|<|>).* [NC,OR]
+    RewriteCond %{QUERY_STRING} (NULL|OUTFILE|LOAD_FILE) [OR]
+    RewriteCond %{QUERY_STRING} (\./|\../|\.../)+(motd|etc|bin) [NC,OR]
+    RewriteCond %{QUERY_STRING} (localhost|loopback|127\.0\.0\.1) [NC,OR]
+    RewriteCond %{QUERY_STRING} (<|>|'|%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
+    RewriteCond %{QUERY_STRING} concat[^\(]*\( [NC,OR]
+    RewriteCond %{QUERY_STRING} union([^s]*s)+elect [NC,OR]
+    RewriteCond %{QUERY_STRING} union([^a]*a)+ll([^s]*s)+elect [NC,OR]
+    RewriteCond %{QUERY_STRING} (;|<|>|'|"|\)|%0A|%0D|%22|%27|%3C|%3E|%00).*(/\*|union|select|insert|drop|delete|update|cast|create|char|convert|alter|declare|order|script|set|md5|benchmark|encode) [NC,OR]
+    RewriteCond %{QUERY_STRING} (sp_executesql) [NC]
+    RewriteRule ^(.*)$ - [F,L]
+
+	# LANGUAGE
+	RewriteRule ^([en|cn|ru|jp]{2})/(.*)$ $2?lang=$1&%{QUERY_STRING} [R=301,L]
+
+	# BEGIN RESIZE IMAGES
+	RewriteCond %{REQUEST_URI} (?i)(jpg|jpeg|png|gif)$
+	RewriteCond %{QUERY_STRING} h=([1-9]) [OR]
+	RewriteCond %{QUERY_STRING} w=([1-9]) [OR]
+	RewriteCond %{QUERY_STRING} zc=([0-4]) [OR]
+	RewriteCond %{QUERY_STRING} q=([0-100])
+	RewriteRule (.*) ./modules/resizeImage.php?src=%{REQUEST_URI}&%{QUERY_STRING} [L]
+	# END RESIZE
+
+	#ADMIN LOGIN
+	# Redirect login.php to login
+    RewriteCond %{THE_REQUEST} /admin/login\.php [NC]
+    RewriteRule ^admin/login\.php$ admin/login [R=301,L]
+
+	RewriteRule ^admin/login$ admin/login.php [NE,NC,L,QSA]
+	# IF FILE EXISTS, DROP HTACCESS
+	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteRule ^ - [L]
+	
+	#ADMIN CONFIG MENU
+	RewriteRule ^admin/cau-hinh/(.*)$ admin/index.php?name=cau-hinh&slug=$1 [NE,NC,L,QSA]
+
+	#ADMIN DASHBOARD
+	RewriteRule ^admin/(.*)$ admin/index.php?slug=$1 [NE,NC,L,QSA]
+
+	#FRONTEND
+	RewriteRule ^(.*)$ index.php?slug=$1 [NE,NC,L,QSA]
+
+</IfModule>

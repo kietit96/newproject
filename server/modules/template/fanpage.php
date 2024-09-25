@@ -1,0 +1,1 @@
+<div class="fb-page" data-href="<?=$infoPage->facebook ?>" data-tabs="timeline" data-height="300" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="<?=$infoPage->facebook ?>"><a href="<?=$infoPage->facebook ?>"><?=$infoPage->title ?></a></blockquote></div></div>
