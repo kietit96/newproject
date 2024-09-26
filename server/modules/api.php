@@ -49,17 +49,21 @@ switch ($do) {
     case "register":
         $post = json_decode(file_get_contents('php://input'), true);
         unset($post["retypepassword"]);
-        $count = $db->checkUser($post['email'], $post['username']) * 1;
+        $checkUser = $db->checkUser($post['email'], $post['username']);
         $message = "Account is already exist";
         $token = '';
         $user = [];
-        $sql = "";
-        if ($count < 1) {
+        $sql =  "";
+        if ($checkUser->count * 1 < 1) {
             $message = "Register success";
+            $result['error'] = 0;
             $token = generateToken();
             $post["password"] = md5($post["password"]);
-            if (! $db->insertData("user", $post)) {
+            $post["time"] = timeNow();
+            if (!$db->insertData("user", $post)) {
                 $message = "SQL ERROR";
+                $sql = $db->insertDataError("user", $post);
+                $result['error'] = 1;
             }
             unset($post["password"]);
             $user = $post;

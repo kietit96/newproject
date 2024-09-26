@@ -4,7 +4,7 @@ return [
 
   "vn" => [
     "urlDomain" => $folderName . '/',
-    "databaseName" => "anhkiet_reactjs",
+    "databaseName" => "anhkiet_server",
     "text" => [
       "infoFooter" => "Thông tin công ty",
       "address" => "Địa chỉ",

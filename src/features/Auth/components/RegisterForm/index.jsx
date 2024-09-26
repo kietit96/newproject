@@ -1,10 +1,10 @@
-import {yupResolver} from "@hookform/resolvers/yup"
-import {LockOutlined} from "@mui/icons-material"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { LockOutlined } from "@mui/icons-material"
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded"
-import {Avatar, Button, createTheme, FormLabel, Typography} from "@mui/material"
-import {makeStyles, ThemeProvider} from "@mui/styles"
+import { Avatar, Button, createTheme, FormLabel, LinearProgress, Typography } from "@mui/material"
+import { makeStyles, ThemeProvider } from "@mui/styles"
 import PropTypes from "prop-types"
-import {useForm} from "react-hook-form"
+import { useForm } from "react-hook-form"
 import * as yup from "yup"
 import FieldInput from "../../../../components/form-controller/FieldInput"
 import FieldPassword from "../../../../components/form-controller/FieldPassword"
@@ -45,18 +45,25 @@ const useStyle = makeStyles((theme) => ({
   },
 }))
 function AppContent(props) {
-  const {form, submitForm, handleClose} = props
-
+  const { form, submitForm, handleClose } = props
+  const { isSubmitting } = form.formState;
+  const handleSubmit = async (values) => {
+    if (submitForm) {
+      await submitForm(values)
+    }
+    form.reset()
+  }
   const classes = useStyle()
   return (
     <div className={classes.root}>
+      {isSubmitting && <LinearProgress />}
       <Avatar className={classes.icon}>
         <LockOutlined></LockOutlined>
       </Avatar>
       <Typography variant='h4' className={classes.title}>
         Create an account
       </Typography>
-      <form onSubmit={form.handleSubmit(submitForm)}>
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
         <FormLabel htmlFor='username'>Username</FormLabel>
         <FieldInput
           id='username'
@@ -89,6 +96,7 @@ function AppContent(props) {
           <CancelRoundedIcon />
         </span>
         <Button
+          disabled={isSubmitting}
           id='button-submit'
           className={classes.buttonSubmit}
           fullWidth
@@ -102,7 +110,7 @@ function AppContent(props) {
 }
 const theme = createTheme()
 function RegisterForm(props) {
-  const {handleClose, handleSubmit} = props
+  const { handleClose, handleSubmit } = props
   const schema = yup
     .object({
       username: yup

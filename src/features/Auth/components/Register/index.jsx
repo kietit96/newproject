@@ -1,17 +1,23 @@
 import PropTypes from "prop-types"
-import {useDispatch} from "react-redux"
-import {register} from "../../userSlice"
+import { useDispatch } from "react-redux"
+import { register } from "../../userSlice"
 import RegisterForm from "../RegisterForm"
+import { unwrapResult } from "@reduxjs/toolkit"
 
 Register.propTypes = {
   handleClose: PropTypes.func,
 }
 
-function Register({handleClose}) {
+function Register({ handleClose }) {
   const dispatch = useDispatch()
   const handleSubmit = async (values) => {
-    const data = await dispatch(register(values)).unwrap()
-    console.log(data)
+    try {
+      const data = await dispatch(register(values))
+      const resultAction = unwrapResult(data)
+      console.log("uer:", resultAction)
+    } catch (error) {
+      console.error(error)
+    }
   }
   return (
     <div>

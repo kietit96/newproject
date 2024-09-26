@@ -748,7 +748,7 @@ class DB extends database
 	}
 	public function checkUser($email, $username)
 	{
-		$sql = "SELECT count(*) FROM `" . dbPrefix . "user` WHERE `email`= '$email' OR `username`= '$username'";
+		$sql = "SELECT count(*) as count FROM `" . dbPrefix . "user` WHERE `email`= '$email' OR `username`= '$username'";
 		$this->setQuery($sql);
 		return $this->loadRow(['user']);
 	}
