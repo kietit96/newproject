@@ -1,16 +1,17 @@
-import { yupResolver } from "@hookform/resolvers/yup"
-import { LockOutlined } from "@mui/icons-material"
+import {yupResolver} from "@hookform/resolvers/yup"
+import {LockOutlined} from "@mui/icons-material"
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded"
-import { Avatar, Button, createTheme, FormLabel, Typography } from "@mui/material"
-import { makeStyles, ThemeProvider } from "@mui/styles"
+import {Avatar, Button, createTheme, FormLabel, Typography} from "@mui/material"
+import {makeStyles, ThemeProvider} from "@mui/styles"
 import PropTypes from "prop-types"
-import { useForm } from "react-hook-form"
+import {useForm} from "react-hook-form"
 import * as yup from "yup"
 import FieldInput from "../../../../components/form-controller/FieldInput"
 import FieldPassword from "../../../../components/form-controller/FieldPassword"
 
 RegisterForm.propTypes = {
   handleClose: PropTypes.func,
+  handleSubmit: PropTypes.func,
 }
 AppContent.propTypes = {
   submitForm: PropTypes.func,
@@ -45,6 +46,7 @@ const useStyle = makeStyles((theme) => ({
 }))
 function AppContent(props) {
   const {form, submitForm, handleClose} = props
+
   const classes = useStyle()
   return (
     <div className={classes.root}>
@@ -59,7 +61,7 @@ function AppContent(props) {
         <FieldInput
           id='username'
           placeholder='john name'
-          name='user'
+          name='username'
           type='text'
           form={form}></FieldInput>
         <FormLabel htmlFor='email'>Email</FormLabel>
@@ -100,10 +102,10 @@ function AppContent(props) {
 }
 const theme = createTheme()
 function RegisterForm(props) {
-  const {handleClose} = props
+  const {handleClose, handleSubmit} = props
   const schema = yup
     .object({
-      user: yup
+      username: yup
         .string()
         .required("không được để trống")
         .test("validateUser", "Nhập ít nhất 2 chữ", (value) => {
@@ -125,23 +127,19 @@ function RegisterForm(props) {
     .required()
   const form = useForm({
     defaultValues: {
-      user: "",
+      username: "",
       email: "",
       password: "",
       retypepassword: "",
     },
     resolver: yupResolver(schema),
   })
-  const submitForm = (user, password) => {
-    console.log(user, password)
-  }
   return (
     <ThemeProvider theme={theme}>
       <AppContent
         handleClose={handleClose}
-        {...props}
         form={form}
-        submitForm={submitForm}
+        submitForm={handleSubmit}
       />
     </ThemeProvider>
   )

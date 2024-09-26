@@ -895,6 +895,11 @@ function time_elapsed_string($datetime, $full = false)
     if (!$full) $string = array_slice($string, 0, 1);
     return $string ? implode(', ', $string) . ' trước' : 'ngay bây giờ';
 }
+function generateToken($length = 32)
+{
+    return bin2hex(random_bytes($length / 2));
+}
+
 /*===================================*/
 function linkUpdateMenu($id)
 {

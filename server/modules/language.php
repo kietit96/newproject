@@ -4,7 +4,7 @@ return [
 
   "vn" => [
     "urlDomain" => $folderName . '/',
-    "databaseName" => "anhkiet_lang_final",
+    "databaseName" => "anhkiet_reactjs",
     "text" => [
       "infoFooter" => "Thông tin công ty",
       "address" => "Địa chỉ",
@@ -60,7 +60,7 @@ return [
   ],
   "en" => [
     "urlDomain" => $folderName . '/',
-    "databaseName" => "anhkiet_lang_final",
+    "databaseName" => "anhkiet_reactjs",
     "text" => [
       "infoFooter" => "Information",
       "address" => "Address",

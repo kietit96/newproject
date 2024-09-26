@@ -395,24 +395,12 @@ if (isset($_GET['do'])) {
                 }
                 break;
             case 'register':
-                /*require_once('recaptchalib.php');
-                $resp = recaptcha_check_answer('6LdyfQsUAAAAAG3LgRecDNeT1mgmERMI51QwfxMz', $_SERVER['REMOTE_ADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field']);
-                
-                if (!$resp->is_valid) {
-                    $result['text'] = 'Sai mã capcha!';
-                } else { 
-                    unset($_POST['recaptcha_challenge_field']);
-                    unset($_POST['recaptcha_response_field']);
-                }*/
-
                 foreach ($_POST as $key => $data) {
                     if (strlen($data)) {
                         $post[$key] = $data;
                     }
                 }
-
                 if (count($post) == count($_POST)) {
-
                     if ($post['password'] == $post['passwordCheck']) {
                         $check    = 0;
                         $checkUser = $db->alone_data_where('user', 'phone', $post['phone']);
