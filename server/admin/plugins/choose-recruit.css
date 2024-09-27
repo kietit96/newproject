@@ -1,0 +1,192 @@
+.head-tab {
+    display: flex;
+    width: 100%;
+    padding-bottom: 15px;
+    justify-content: space-around;
+    border-bottom: 1px solid #ccc;
+}
+
+.head-tab h4 {
+    text-transform: uppercase;
+}
+
+.body-tab {
+    padding-top: 15px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.content-menu-list {
+    padding: 10px 0px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    display: flex;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.content-menu-list .items {
+    padding: 0 15px;
+    margin-bottom: 5px;
+}
+
+.content-menu-list .items>div {
+    padding: 5px 15px;
+    border-radius: 15px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.content-menu-list .items>div .edit-title-box {
+    position: absolute;
+    z-index: 2;
+    left: calc(100% - 10px);
+    top: 0px;
+    display: none;
+}
+
+.content-menu-list .items>div:hover .edit-title-box {
+    display: flex;
+}
+
+.content-menu-list .items>div .edit-title-menu {
+    background: var(--text-color);
+    color: #FFF;
+    padding: 5px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.content-menu-list .items>div .edit-title-menu-confirm {
+    background: #59D61D;
+    color: #FFF;
+    padding: 5px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.content-menu-list .items>div .edit-title-menu-cancel {
+    background: #D20000;
+    color: #FFF;
+    padding: 5px;
+    border-radius: 5px;
+    width: 100%;
+}
+.state_caluongcao>div{
+    background: #D20000!important;
+    color: #FFF!important;
+}
+.content-menu-list .items>div .add-title-menu {
+    background: var(--text-color);
+    color: #FFF;
+    padding: 5px;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+.content-menu-list .items>div .title-h .form-control {
+    width: 180px;
+}
+
+.content-menu-list .items.active>div {
+    background: var(--main-color);
+}
+.recruit-item {
+    position: relative;
+    padding-top: 30px;
+}
+.recruit-item .update-recruit-item{
+    display: none;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+.recruit-item button.tuyengap-recruit-item{
+    text-transform: uppercase;
+}
+.recruit-item button.del-recruit-item{
+    background: #D20000;
+    color: #FFF;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    outline: none;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.recruit-item:hover .update-recruit-item{
+    display: flex;
+}
+.recruit-item .editing {
+    padding: 0px 15px;
+    display: none;
+}
+
+.recruit-item-title {
+    background: var(--main-color);
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 10px 0;
+    position: relative;
+}
+
+.recruit-item-title:hover .open-edit-item-title {
+    display: block;
+}
+
+.recruit-item-title .open-edit-item-title {
+    position: absolute;
+    z-index: 2;
+    top: 10px;
+    right: 0px;
+    display: none;
+    padding: 10px 12px;
+}
+
+.edit-item-title .edit-confirm,
+.edit-item-title .edit-exit {
+    padding: 10px 12px;
+}
+
+.recruit-item-title .edit-item-title {
+    margin-top: 5px;
+    display: block;
+}
+
+.recruit-item-img {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    min-height: 100px;
+    background-color: #000;
+}
+
+.recruit-item-txt {
+    background: #3d3d3d;
+    color: #eee;
+    padding: 15px 20px;
+    line-height: 1.5;
+    position: relative;
+}
+
+.recruit-item-txt .edit-box-content {
+    display: none;
+}
+
+.recruit-item-txt .open-edit-content {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    display: none;
+}
+
+.recruit-item-txt:hover .open-edit-content {
+    display: block;
+}
