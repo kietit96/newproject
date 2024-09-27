@@ -24,6 +24,7 @@ function Login({ handleClose }) {
       enqueueSnackbar(error.message, { autoHideDuration: 3000, variant: 'error', action: (snackBarId) => <Button onClick={() => closeSnackbar(snackBarId)}><CloseIcon /></Button> })
     }
   }
+  //new
   return (
     <div>
       <LoginForm handleClose={handleClose} handleSubmit={handleSubmit} />
