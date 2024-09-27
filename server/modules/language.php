@@ -60,7 +60,7 @@ return [
   ],
   "en" => [
     "urlDomain" => $folderName . '/',
-    "databaseName" => "anhkiet_reactjs",
+    "databaseName" => "anhkiet_server",
     "text" => [
       "infoFooter" => "Information",
       "address" => "Address",

@@ -1,10 +1,17 @@
-import { yupResolver } from "@hookform/resolvers/yup"
-import { LockOutlined } from "@mui/icons-material"
+import {yupResolver} from "@hookform/resolvers/yup"
+import {LockOutlined} from "@mui/icons-material"
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded"
-import { Avatar, Button, createTheme, FormLabel, LinearProgress, Typography } from "@mui/material"
-import { makeStyles, ThemeProvider } from "@mui/styles"
+import {
+  Avatar,
+  Button,
+  createTheme,
+  FormLabel,
+  LinearProgress,
+  Typography,
+} from "@mui/material"
+import {makeStyles, ThemeProvider} from "@mui/styles"
 import PropTypes from "prop-types"
-import { useForm } from "react-hook-form"
+import {useForm} from "react-hook-form"
 import * as yup from "yup"
 import FieldInput from "../../../../components/form-controller/FieldInput"
 import FieldPassword from "../../../../components/form-controller/FieldPassword"
@@ -45,13 +52,13 @@ const useStyle = makeStyles((theme) => ({
   },
 }))
 function AppContent(props) {
-  const { form, submitForm, handleClose } = props
-  const { isSubmitting } = form.formState;
+  const {form, handleClose} = props
+  const {isSubmitting} = form.formState
   const handleSubmit = async (values) => {
+    const {submitForm} = props
     if (submitForm) {
       await submitForm(values)
     }
-    form.reset()
   }
   const classes = useStyle()
   return (
@@ -110,7 +117,7 @@ function AppContent(props) {
 }
 const theme = createTheme()
 function RegisterForm(props) {
-  const { handleClose, handleSubmit } = props
+  const {handleClose, handleSubmit} = props
   const schema = yup
     .object({
       username: yup

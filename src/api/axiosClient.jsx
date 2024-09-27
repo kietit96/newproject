@@ -2,8 +2,6 @@ import axios from "axios"
 
 const axiosClient = axios.create({
   baseURL: "https://localhost/newproject/server/",
-  timeout: 1000,
-  headers: {"Content-Type": "Application/json"},
 })
 // Add a request interceptor
 axiosClient.interceptors.request.use(
@@ -26,6 +24,10 @@ axiosClient.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+    const { config, status, data } = error.response
+    if (config.url && status === 400) {
+      throw new Error(data.message)
+    }
     return Promise.reject(error)
   },
 )
