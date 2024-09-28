@@ -1,13 +1,12 @@
-import React from "react"
 import PropTypes from "prop-types"
-import FeatureProduct from "../../features/ListProduct"
+import ProductFeature from "../../features/ListProduct"
 
 Home.propTypes = {}
 
 function Home(props) {
   return (
     <div>
-      <FeatureProduct />
+      <ProductFeature />
     </div>
   )
 }

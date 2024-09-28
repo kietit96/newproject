@@ -85,7 +85,6 @@ function AppContent(props) {
           type='password'
           form={form}
         />
-        <FormLabel htmlFor='username'>Retype password</FormLabel>
         <span className={classes.buttonCancel} onClick={handleClose}>
           <CancelRoundedIcon />
         </span>

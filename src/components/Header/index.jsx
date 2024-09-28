@@ -10,10 +10,13 @@ import Typography from "@mui/material/Typography"
 import { makeStyles } from "@mui/styles"
 import { useEffect, useState } from "react"
 import { NavLink } from "react-router-dom"
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import listMenuApi from "../../api/apiListMenu"
 import Login from "../../features/Auth/components/Login"
 import Register from "../../features/Auth/components/Register"
+import { useDispatch, useSelector } from "react-redux"
+import { Menu, MenuItem } from "@mui/material"
+import { logout } from "../../features/Auth/userSlice"
 const useStyle = makeStyles(() => ({
   title: {
     textDecoration: "none",
@@ -27,15 +30,27 @@ const MODE = {
 }
 export default function Head() {
   const classes = useStyle()
+  const dispatch = useDispatch();
+  const loginUser = useSelector(state => state.user.current)
+  const isLoggedIn = !!loginUser.user
   const [listMenu, setListMenu] = useState([])
   const [open, setOpen] = useState(false)
   const [mode, setMode] = useState(MODE.REGISTER)
-  const handleClickOpen = () => {
+  const [anchorMenu, setAnchorMenu] = useState(null)
+  const handleClickOpenDialog = () => {
     setOpen(true)
   }
-
-  const handleClose = () => {
+  const handleCloseDialog = () => {
     setOpen(false)
+  }
+  const handleOpenMenu = (event) => {
+    setAnchorMenu(event.currentTarget);
+  }
+  const handleCloseMenu = () => {
+    setAnchorMenu(null);
+  }
+  const handleLogout = () => {
+    dispatch(logout())
   }
   useEffect(() => {
     try {
@@ -71,24 +86,42 @@ export default function Head() {
               </Typography>
             ))}
           </Box>
-          <Typography variant='h6'>
-            <Button color='inherit' onClick={handleClickOpen}>
-              Register
-            </Button>
-          </Typography>
+          {!isLoggedIn && (
+            <>
+              <Typography variant='h6'>
+                <Button color='inherit' onClick={handleClickOpenDialog}>
+                  Account
+                </Button>
+              </Typography>
+            </>
+          )}
+          {isLoggedIn && (
+            <>
+              <Typography variant='h6'>
+                <IconButton sx={{ color: "#FFF" }} onClick={handleOpenMenu}><AccountCircleIcon /></IconButton>
+              </Typography>
+              <Menu id="basic-menu"
+                anchorEl={anchorMenu}
+                open={!!anchorMenu}
+                onClose={handleCloseMenu}>
+                <MenuItem onClick={() => handleClickOpenDialog(MODE.LOGIN)}>My Account</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </>
+          )}
         </Toolbar>
       </AppBar>
       <Dialog
         open={open}
         onClose={(event, reason) => {
           if (reason !== "backdropClick" || reason !== "escapeKeyDown") {
-            handleClose
+            handleCloseDialog
           }
         }}>
         <DialogContent>
           {mode === MODE.REGISTER && (
             <>
-              <Register handleClose={handleClose} />
+              <Register handleClose={handleCloseDialog} />
               <Box sx={{ textAlign: "right" }}>
                 <Button onClick={() => setMode(MODE.LOGIN)}>Already have an account? login here -{'>'}</Button>
               </Box>
@@ -96,7 +129,7 @@ export default function Head() {
           )}
           {mode === MODE.LOGIN && (
             <>
-              <Login handleClose={handleClose} />
+              <Login handleClose={handleCloseDialog} />
               <Box sx={{ textAlign: "left" }}>
                 <Button onClick={() => setMode(MODE.REGISTER)}>{'<'}- Doesn{'\''}t have an account? register here </Button>
               </Box>

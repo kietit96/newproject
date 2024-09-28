@@ -1,12 +1,12 @@
-import React, {useEffect} from "react"
+import React, { useEffect } from "react"
 import PropTypes from "prop-types"
-import {useState} from "react"
+import { useState } from "react"
 import apiItem from "../../api/apiProduct"
 import ProductList from "./Product"
 
-FeatureProduct.propTypes = {}
+ProductFeature.propTypes = {}
 
-function FeatureProduct(props) {
+function ProductFeature(props) {
   const [listProduct, setListProduct] = useState([])
   useEffect(() => {
     try {
@@ -26,4 +26,4 @@ function FeatureProduct(props) {
   return <ProductList listProduct={listProduct} />
 }
 
-export default FeatureProduct
+export default ProductFeature
