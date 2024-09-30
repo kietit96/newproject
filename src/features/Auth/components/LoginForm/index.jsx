@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import {yupResolver} from "@hookform/resolvers/yup"
-import {LockOutlined} from "@mui/icons-material"
-=======
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LockOutlined } from "@mui/icons-material"
->>>>>>> origin/master
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded"
 import {
   Avatar,
@@ -14,20 +9,14 @@ import {
   LinearProgress,
   Typography,
 } from "@mui/material"
-<<<<<<< HEAD
-import {makeStyles, ThemeProvider} from "@mui/styles"
-import PropTypes from "prop-types"
-import {useForm} from "react-hook-form"
-=======
 import { makeStyles, ThemeProvider } from "@mui/styles"
 import PropTypes from "prop-types"
 import { useForm } from "react-hook-form"
->>>>>>> origin/master
 import * as yup from "yup"
 import FieldInput from "../../../../components/form-controller/FieldInput"
 import FieldPassword from "../../../../components/form-controller/FieldPassword"
 
-RegisterForm.propTypes = {
+LoginForm.propTypes = {
   handleClose: PropTypes.func,
   handleSubmit: PropTypes.func,
 }
@@ -63,10 +52,10 @@ const useStyle = makeStyles((theme) => ({
   },
 }))
 function AppContent(props) {
-  const {form, handleClose} = props
-  const {isSubmitting} = form.formState
+  const { form, handleClose } = props
+  const { isSubmitting } = form.formState
   const handleSubmit = async (values) => {
-    const {submitForm} = props
+    const { submitForm } = props
     if (submitForm) {
       await submitForm(values)
     }
@@ -79,16 +68,9 @@ function AppContent(props) {
         <LockOutlined></LockOutlined>
       </Avatar>
       <Typography variant='h4' className={classes.title}>
-        Create an account
+        Login
       </Typography>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <FormLabel htmlFor='username'>Username</FormLabel>
-        <FieldInput
-          id='username'
-          placeholder='john name'
-          name='username'
-          type='text'
-          form={form}></FieldInput>
         <FormLabel htmlFor='email'>Email</FormLabel>
         <FieldInput
           id='email'
@@ -103,13 +85,6 @@ function AppContent(props) {
           type='password'
           form={form}
         />
-        <FormLabel htmlFor='username'>Retype password</FormLabel>
-        <FieldPassword
-          type='password'
-          placeholder='retype password'
-          name='retypepassword'
-          form={form}
-        />
         <span className={classes.buttonCancel} onClick={handleClose}>
           <CancelRoundedIcon />
         </span>
@@ -120,23 +95,17 @@ function AppContent(props) {
           fullWidth
           type='submit'
           variant='contained'>
-          Submit
+          Sign in
         </Button>
       </form>
     </div>
   )
 }
 const theme = createTheme()
-function RegisterForm(props) {
-  const {handleClose, handleSubmit} = props
+function LoginForm(props) {
+  const { handleClose, handleSubmit } = props
   const schema = yup
     .object({
-      username: yup
-        .string()
-        .required("không được để trống")
-        .test("validateUser", "Nhập ít nhất 2 chữ", (value) => {
-          return value.split(" ").length >= 2
-        }),
       password: yup
         .string()
         .required("không được đề trống")
@@ -145,18 +114,12 @@ function RegisterForm(props) {
         .string()
         .required("không được để trống")
         .email("nhập đúng email"),
-      retypepassword: yup
-        .string()
-        .required("không được đề trống")
-        .oneOf([yup.ref("password")], "password không khớp"),
     })
     .required()
   const form = useForm({
     defaultValues: {
-      username: "",
       email: "",
       password: "",
-      retypepassword: "",
     },
     resolver: yupResolver(schema),
   })
@@ -171,4 +134,4 @@ function RegisterForm(props) {
   )
 }
 
-export default RegisterForm
+export default LoginForm

@@ -752,6 +752,15 @@ class DB extends database
 		$this->setQuery($sql);
 		return $this->loadRow(['user']);
 	}
+<<<<<<< HEAD
+=======
+	public function loginUser($email, $pass)
+	{
+		$sql = "SELECT * FROM `vt_user` WHERE `email` = '$email' AND `password` = '$pass';";
+		$this->setQuery($sql);
+		return $this->loadRow(array($sql));
+	}
+>>>>>>> origin/master
 }
 $db = new DB();
 ?>

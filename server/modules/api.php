@@ -61,6 +61,10 @@ if (isset($_GET["do"]) && $_SERVER['REQUEST_METHOD'] !== 'OPTIONS') {
                 exit;
             }
             $token = generateToken();
+<<<<<<< HEAD
+=======
+            $post['code'] = $token;
+>>>>>>> origin/master
             $post["password"] = md5($post["password"]);
             $post["time"] = timeNow();
             if (!$db->insertData("user", $post)) {
@@ -74,10 +78,35 @@ if (isset($_GET["do"]) && $_SERVER['REQUEST_METHOD'] !== 'OPTIONS') {
                 ]);
                 exit;
             }
+<<<<<<< HEAD
             http_response_code(200);
             unset($post["password"]);
             $user = $post;
             $result['response'] = ["error" => 0, "mess" => $message, "user" => $user, "token" => $token, "sql" => $sql];
+=======
+            $_SESSION['token'] = $token;
+            $message = "Register successfuly";
+            http_response_code(200);
+            unset($post["password"]);
+            $user = $post;
+            $result['response'] = ["error" => 0, "message" => $message, "user" => $user, "token" => $token, "sql" => $sql];
+            break;
+        case "login":
+            $post = json_decode(file_get_contents('php://input'), true);
+            $post['password'] = md5($post['password']);
+            $user = $db->loginUser($post["email"], $post["password"]);
+            if (!$user) {
+                http_response_code(400);
+                echo $result["error_response"] = json_encode([
+                    'error' => 1,
+                    'message' => "Account is not exist",
+                ]);
+                exit;
+            }
+            http_response_code(200);
+            $token = generateToken();
+            $result["response"] = ["error" => 0, "message" => "Login successfuly", "user" => $user, "token" => $token];
+>>>>>>> origin/master
             break;
         default:
             $result['result'] = [];

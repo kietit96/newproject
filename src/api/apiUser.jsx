@@ -5,6 +5,12 @@ const userApi = {
   register(data) {
     return axiosClient.post(`${urlApi}register`, data)
   },
+<<<<<<< HEAD
+=======
+  login(data) {
+    return axiosClient.post(`${urlApi}login`, data)
+  }
+>>>>>>> origin/master
 }
 
 export default userApi
